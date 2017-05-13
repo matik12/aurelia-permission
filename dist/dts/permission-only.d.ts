@@ -1,9 +1,10 @@
 import AuthorizeService from './authorize-service';
-export declare class PermissionOnlyCustomAttribute {
+export declare class PermissionOnly {
     private element;
     private authorizeService;
     static StyleAttributeName: string;
-    private roles;
+    static PermissionSeparator: string;
+    private permissions;
     constructor(element: Element, authorizeService: AuthorizeService);
     attached(): void;
     valueChanged(newValue: string): void;

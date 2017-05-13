@@ -2,8 +2,8 @@ import { FrameworkConfiguration, Aurelia } from 'aurelia-framework';
 import { configure } from '../../src/aurelia-permission';
 
 describe('The aurelia permission plugin configuration', () => {
-  var configuration;
-  var permissionStore;
+  let configuration;
+  let permissionStore;
 
   beforeEach(() => {
     configuration = new FrameworkConfiguration(new Aurelia());

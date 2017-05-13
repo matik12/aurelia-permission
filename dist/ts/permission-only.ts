@@ -3,32 +3,35 @@ import { autoinject } from 'aurelia-framework';
 import AuthorizeService from './authorize-service';
 
 @autoinject()
-export class PermissionOnlyCustomAttribute {
+export class PermissionOnly {
 
   public static StyleAttributeName = 'style';
+  public static PermissionSeparator = ',';
 
-  private roles = '';
+  private permissions: string[];
 
   constructor(private element: Element, private authorizeService: AuthorizeService) { }
 
   attached() {
     this.hideElement();
 
-    this.authorizeService.isAuthorized(this.roles).then(
+    this.authorizeService.isAuthorized(...this.permissions).then(
       () => this.showElement(),
       () => { /* Do just nothing, because element is already hidden */ }
     );
   }
 
   valueChanged(newValue: string) {
-    this.roles = newValue;
+    this.permissions = newValue ?
+      newValue.replace(' ', '').split(PermissionOnly.PermissionSeparator) :
+      [];
   }
 
   private hideElement() {
-    this.element.setAttribute(PermissionOnlyCustomAttribute.StyleAttributeName, 'display: none;');
+    this.element.setAttribute(PermissionOnly.StyleAttributeName, 'display: none;');
   }
 
   private showElement() {
-    this.element.removeAttribute(PermissionOnlyCustomAttribute.StyleAttributeName);
+    this.element.removeAttribute(PermissionOnly.StyleAttributeName);
   }
 }

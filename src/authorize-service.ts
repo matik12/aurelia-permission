@@ -2,7 +2,7 @@ import { autoinject } from 'aurelia-dependency-injection';
 import { RouteConfig } from 'aurelia-router';
 import * as PromiseExtended from 'bluebird';
 
-import RoleStore from './role-store';
+import PermissionsStore from './permission-store';
 
 export interface PermissionRoute extends RouteConfig {
   settings: {
@@ -20,69 +20,67 @@ export interface AuthorizeRedirect {
 
 @autoinject()
 export default class AuthorizeService {
-  constructor(private roleStore: RoleStore) { }
+  constructor(private permissionsStore: PermissionsStore) { }
 
   canRedirect(toRoute: PermissionRoute): Promise<AuthorizeRedirect> {
     return new Promise<AuthorizeRedirect>(resolve => {
       const routeHasConfig = toRoute.settings && toRoute.settings.permission;
       const permissionConfig = routeHasConfig ? toRoute.settings.permission : null;
 
-      // Authorize when no role permissions has been set
+      // Authorize when no permissions has been set
       if (!routeHasConfig) {
         resolve(this.createRedirectResult());
         return;
       }
 
-      const roleDefinitions: Promise<any>[] = this.getRoleDefinitions(permissionConfig.only);
+      const permissionDefinitions: Promise<any>[] = this.getPermissionDefinitions(permissionConfig.only);
 
-      // Authorize when no definitions provided for role permissions
-      if (roleDefinitions.length === 0) {
+      // Authorize when no definitions provided for permissions
+      if (permissionDefinitions.length === 0) {
         resolve(this.createRedirectResult());
         return;
       }
 
-      // Authorize when any role definition promises has been resolved or
+      // Authorize when any of permission definition promises has been resolved or
       // Not authorize if all promises were rejected
-      PromiseExtended.any(roleDefinitions).then(
+      PromiseExtended.any(permissionDefinitions).then(
         () => resolve(this.createRedirectResult()),
         () => resolve(this.createRedirectResult(false, permissionConfig.redirectTo))
       );
     });
   }
 
-  isAuthorized(roleList: string): Promise<any> {
-    const onlyRoles: string[] = roleList.replace(' ', '').split(',');
-
+  isAuthorized(...permissions: string[]): Promise<any> {
     return new Promise((resolve, reject) => {
-      const roleDefinitions: Promise<any>[] = this.getRoleDefinitions(onlyRoles);
+      const permissionDefinitions: Promise<any>[] = this.getPermissionDefinitions(permissions);
 
-      // Authorize when no definitions provided for role permissions
-      if (roleDefinitions.length === 0) {
+      // Authorize when no definitions provided for permissions
+      if (permissionDefinitions.length === 0) {
         resolve();
         return;
       }
 
-      // Authorize when any role definition promises has been resolved or
+      // Authorize when any of permission definition promises has been resolved or
       // Not authorize if all promises were rejected
-      PromiseExtended.any(roleDefinitions).then(
+      PromiseExtended.any(permissionDefinitions).then(
         () => resolve(),
-        () => reject(new Error('User has none of required roles assigned'))
+        () => reject(new Error('User has none of required permissions assigned'))
       );
     });
   }
 
-  private getRoleDefinitions(onlyAuthorizeRoles: string[]): Promise<any>[] {
-    const roleDefinitions: Promise<any>[] = [];
+  private getPermissionDefinitions(onlyAuthorizePermissions: string[]): Promise<any>[] {
+    const permissionDefinitions: Promise<any>[] = [];
 
-    onlyAuthorizeRoles.forEach(role => {
-      const roleDefinition = this.roleStore.getDefinition(role);
+    onlyAuthorizePermissions.forEach(permission => {
+      const permissionDefinition = this.permissionsStore.getDefinition(permission);
 
-      if (roleDefinition) {
-        roleDefinitions.push(roleDefinition());
+      if (permissionDefinition) {
+        permissionDefinitions.push(permissionDefinition());
       }
     });
 
-    return roleDefinitions;
+    return permissionDefinitions;
   }
 
   private createRedirectResult(result: boolean = true, cancelRoute?: string): AuthorizeRedirect {

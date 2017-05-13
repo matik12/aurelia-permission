@@ -1,5 +1,5 @@
 import { RouteConfig } from 'aurelia-router';
-import RoleStore from './role-store';
+import PermissionsStore from './permission-store';
 export interface PermissionRoute extends RouteConfig {
     settings: {
         permission: {
@@ -13,10 +13,10 @@ export interface AuthorizeRedirect {
     cancelRoute?: string;
 }
 export default class AuthorizeService {
-    private roleStore;
-    constructor(roleStore: RoleStore);
+    private permissionsStore;
+    constructor(permissionsStore: PermissionsStore);
     canRedirect(toRoute: PermissionRoute): Promise<AuthorizeRedirect>;
-    isAuthorized(roleList: string): Promise<any>;
-    private getRoleDefinitions(onlyAuthorizeRoles);
+    isAuthorized(...permissions: string[]): Promise<any>;
+    private getPermissionDefinitions(onlyAuthorizePermissions);
     private createRedirectResult(result?, cancelRoute?);
 }

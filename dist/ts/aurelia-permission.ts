@@ -1,15 +1,15 @@
 import { FrameworkConfiguration } from 'aurelia-framework';
 import { AppRouter } from 'aurelia-router';
 
-import RoleStore from './role-store';
+import PermissionsStore from './permission-store';
 import AuthorizeRouteStep from './authorize-route-step';
 import AuthorizeService from './authorize-service';
 
-export function configure(framework: FrameworkConfiguration, config: (roleStore) => void) {
+export function configure(framework: FrameworkConfiguration, config: (permissionsStore) => void) {
 
-  const roleStore = <RoleStore>framework.container.get(RoleStore);
+  const permissionsStore = <PermissionsStore>framework.container.get(PermissionsStore);
 
-  config(roleStore);
+  config(permissionsStore);
 
   framework.globalResources('./permission-only');
 
@@ -21,6 +21,6 @@ export function configure(framework: FrameworkConfiguration, config: (roleStore)
 }
 
 export {
-  RoleStore,
+  PermissionsStore,
   AuthorizeService
 }

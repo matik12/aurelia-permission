@@ -1,5 +1,5 @@
 import { FrameworkConfiguration } from 'aurelia-framework';
-import RoleStore from './role-store';
+import PermissionsStore from './permission-store';
 import AuthorizeService from './authorize-service';
-export declare function configure(framework: FrameworkConfiguration, config: (roleStore) => void): void;
-export { RoleStore, AuthorizeService };
+export declare function configure(framework: FrameworkConfiguration, config: (permissionsStore) => void): void;
+export { PermissionsStore, AuthorizeService };
