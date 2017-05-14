@@ -5,16 +5,29 @@ import PermissionsStore from './permission-store';
 import AuthorizeRouteStep from './authorize-route-step';
 import AuthorizeService from './authorize-service';
 
-export function configure(framework: FrameworkConfiguration, config: (permissionsStore) => void) {
+export interface Configuration {
+  setDefaultRedirectRoute: (route: string) => void;
+}
+
+export function configure(
+  framework: FrameworkConfiguration,
+  configure: (permissionsStore: PermissionsStore, configuration: Configuration) => void
+) {
   const permissionsStore = <PermissionsStore>framework.container.get(PermissionsStore);
-  config(permissionsStore);
+  const authorizeRouteStep = <AuthorizeRouteStep>framework.container.get(AuthorizeRouteStep);
+
+  configure(permissionsStore, {
+    setDefaultRedirectRoute: (route: string) => {
+      authorizeRouteStep.setDefaultRedirectRoute(route);
+    }
+  });
 
   // Configure pipeline step for authorization before activate is invoked
   const appRouter = framework.container.get(AppRouter);
   const authorizePipelineStep = appRouter.pipelineProvider.steps.find(step => { return step.slotName === 'preActivate'; });
   authorizePipelineStep.steps.push(AuthorizeRouteStep);
 
-  framework.globalResources('./permission-only');
+  framework.globalResources('./permission');
 }
 
 export {

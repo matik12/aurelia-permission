@@ -10,6 +10,8 @@ export interface PermissionRoute extends RouteConfig {
 }
 export default class AuthorizeRouteStep {
     private authorizeService;
+    private defaultRedirectRoute;
     constructor(authorizeService: AuthorizeService);
     run(routingContext: any, next: Next): Promise<any>;
+    setDefaultRedirectRoute(route: string): void;
 }
