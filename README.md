@@ -1,3 +1,4 @@
+[![npm Version](https://img.shields.io/npm/v/aurelia-permission.svg)](https://www.npmjs.com/package/aurelia-permission)
 [![Build Status](https://travis-ci.org/matik12/aurelia-permission.svg?branch=master)](https://travis-ci.org/matik12/aurelia-permission)
 
 ---
@@ -106,7 +107,7 @@ or setting **redirectTo** property to define route to redirect to in case user i
 
 ## Hide or disable elements in HTML based on defined permissions
 
-```js
+```html
 <div permission="only: addUsers">Can add users!</div>
 <div permission="only: deleteUsers">Can delete users!</div>
 <div permission="only: addUsers, deleteUsers">Can add or delete users!</div>
