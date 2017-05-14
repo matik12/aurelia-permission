@@ -1,8 +1,9 @@
-import { autoinject } from 'aurelia-framework';
+import { autoinject, customAttribute } from 'aurelia-framework';
 
 import AuthorizeService from './authorize-service';
 
 @autoinject()
+@customAttribute('permission-only')
 export class PermissionOnly {
 
   public static StyleAttributeName = 'style';
@@ -15,9 +16,9 @@ export class PermissionOnly {
   attached() {
     this.hideElement();
 
-    this.authorizeService.isAuthorized(...this.permissions).then(
-      () => this.showElement(),
-      () => { /* Do just nothing, because element is already hidden */ }
+    this.authorizeService.isAuthorized(...this.permissions)
+      .then(() => this.showElement())
+      .catch(() => { /* Do just nothing, because element is already hidden */ }
     );
   }
 

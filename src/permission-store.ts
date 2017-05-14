@@ -7,7 +7,7 @@ export default class PermissionStore {
   private permissionDefinitions: PermissionDefinition[] = [];
 
   definePermission(permission: string, definition: () => Promise<any>) {
-    const definitions = this.permissionDefinitions.filter(rd => rd.permission === permission);
+    const definitions = this.permissionDefinitions.filter(pd => pd.permission === permission);
 
     if (definitions.length > 0) {
       throw Error(`Cannot provide multiple definitions for the same permission: ${permission}!`);

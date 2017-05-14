@@ -15,9 +15,9 @@ export class PermissionOnly {
   attached() {
     this.hideElement();
 
-    this.authorizeService.isAuthorized(...this.permissions).then(
-      () => this.showElement(),
-      () => { /* Do just nothing, because element is already hidden */ }
+    this.authorizeService.isAuthorized(...this.permissions)
+      .then(() => this.showElement())
+      .catch(() => { /* Do just nothing, because element is already hidden */ }
     );
   }
 
