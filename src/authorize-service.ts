@@ -1,5 +1,4 @@
 import { autoinject } from 'aurelia-dependency-injection';
-import * as PromiseExtended from 'bluebird';
 
 import PermissionsStore from './permission-store';
 
@@ -7,27 +6,20 @@ import PermissionsStore from './permission-store';
 export default class AuthorizeService {
   constructor(private permissionsStore: PermissionsStore) { }
 
-  isAuthorized(...permissions: string[]): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const permissionDefinitions: Promise<any>[] = this.getPermissionDefinitions(permissions);
+  isAuthorized(...permissions: string[]): boolean {
+    const permissionDefinitions: boolean[] = this.getPermissionDefinitions(permissions);
+    const noDefinitionsSet = permissionDefinitions.length === 0;
+    const anyPermissionDefinitionIsTrue = (<any>permissionDefinitions).includes(true);
 
-      // Authorize when no definitions provided for permissions
-      if (permissionDefinitions.length === 0) {
-        resolve();
-        return;
-      }
+    if (noDefinitionsSet || anyPermissionDefinitionIsTrue) {
+      return true;
+    }
 
-      // Authorize when any of permission definition promises has been resolved or
-      // Not authorize if all promises were rejected
-      PromiseExtended.any(permissionDefinitions).then(
-        () => resolve(),
-        () => reject(new Error('User has none of required permissions assigned'))
-      );
-    });
+    return false;
   }
 
-  private getPermissionDefinitions(onlyAuthorizePermissions: string[]): Promise<any>[] {
-    const permissionDefinitions: Promise<any>[] = [];
+  private getPermissionDefinitions(onlyAuthorizePermissions: string[]): boolean[] {
+    const permissionDefinitions: boolean[] = [];
 
     onlyAuthorizePermissions.forEach(permission => {
       const permissionDefinition = this.permissionsStore.getDefinition(permission);

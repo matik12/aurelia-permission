@@ -24,14 +24,14 @@ export default class AuthorizeRouteStep {
     const routeHasConfig = toRoute.settings && toRoute.settings.permission;
     const permissionConfig = routeHasConfig ? toRoute.settings.permission : null;
 
-    // Authorize when no permissions have been set
-    if (!routeHasConfig) {
+    const noRoutePermissionsSet = !routeHasConfig;
+    const isAuthorized = permissionConfig === null || this.authorizeService.isAuthorized(...permissionConfig.only);
+
+    if (noRoutePermissionsSet || isAuthorized) {
       return next();
     }
 
-    return this.authorizeService.isAuthorized(...permissionConfig.only)
-      .then(() => next())
-      .catch(() => next.cancel(new Redirect(permissionConfig.redirectTo || this.defaultRedirectRoute)));
+    return next.cancel(new Redirect(permissionConfig.redirectTo || this.defaultRedirectRoute));
   }
 
   setDefaultRedirectRoute(route: string) {

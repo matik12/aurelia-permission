@@ -1,12 +1,12 @@
 export interface PermissionDefinition {
   permission: string;
-  definition: () => Promise<any>;
+  definition: () => boolean;
 }
 
 export default class PermissionStore {
   private permissionDefinitions: PermissionDefinition[] = [];
 
-  definePermission(permission: string, definition: () => Promise<any>) {
+  definePermission(permission: string, definition: () => boolean) {
     const definitions = this.permissionDefinitions.filter(pd => pd.permission === permission);
 
     if (definitions.length > 0) {
@@ -19,13 +19,13 @@ export default class PermissionStore {
     });
   }
 
-  definePermissions(permissions: string[], definition: (permission: string) => Promise<any>) {
+  definePermissions(permissions: string[], definition: (permission: string) => boolean) {
     permissions.forEach(permission => this.definePermission(permission, () => definition(permission)));
   }
 
-  getDefinition(permission: string): () => Promise<any> {
-    const definitions = this.permissionDefinitions.filter(rd => rd.permission === permission);
+  getDefinition(permission: string): () => boolean {
+    const permissionDefinition = this.permissionDefinitions.find(rd => rd.permission === permission);
 
-    return definitions.length > 0 ? definitions[0].definition : null;
+    return permissionDefinition ? permissionDefinition.definition : null;
   }
 }

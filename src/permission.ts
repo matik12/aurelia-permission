@@ -31,15 +31,21 @@ export class Permission {
   }
 
   bind() {
-    this.disableChanged();
-
+    this.onBind();
     this.onNotAuthorized();
-    this.authorizeService.isAuthorized(...this.onlyPermissions)
-      .then(() => this.onAuthorized())
-      .catch(() => { /* Do just nothing, because element is already in not authorized state */ });
+
+    const isAuthorized = this.authorizeService.isAuthorized(...this.onlyPermissions);
+
+    if (isAuthorized) {
+      this.onAuthorized();
+    }
   }
 
-  disableChanged() {
+  onBind() {
+    this.updateDisableBehaviour();
+  }
+
+  updateDisableBehaviour() {
     if (this.disable) {
       this.onNotAuthorized = this.disableElement;
       this.onAuthorized = this.enableElement;

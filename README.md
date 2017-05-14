@@ -30,45 +30,51 @@ typings install github:matik12/aurelia-permission --save
 
 In your Aurelia configuration file(most commonly main file) add the plugin and provide configuration for user permissions :
 ```js
+import { PermissionsStore, Configuration } from 'aurelia-permission';
+
+const sampleUser = {
+  id: 1,
+  permissions: [
+    'addUsers'
+    ,'deleteUsers'
+    ,'listUsers'
+  ]
+}
+const userPromise = new Promise(resolve => {
+  // Simulate promise getting user data including permissions from API
+  setTimeout(() => resolve(sampleUser), 1000);
+});
+
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
-    .plugin('aurelia-permission', () => configurePermissions(aurelia));
+    .plugin('aurelia-permission', (permissionsStore: PermissionsStore, configuration: Configuration) =>
+      configurePermissions(aurelia, permissionsStore, configuration));
 
   aurelia.start().then(() => aurelia.setRoot());
+
+  // If your landing default page needs permissions to show UI properly then
+  // chain starting aurelia app with resolving user promise i.e as below
+  // Thanks to that permissions will be defined before navigate to first page
+  userPromise.then(() => {
+    aurelia.start().then(() => aurelia.setRoot());
+  });
 }
 
-function configurePermissions(aurelia: Aurelia) {
-  const sampleUser = {
-    id: 1,
-    permissions: [
-      'addUsers'
-      ,'deleteUsers'
-      ,'listUsers'
-    ]
-  }
-  const userPromise = new Promise(resolve => {
-    // Simulate promise getting user data including permissions from API
-    setTimeout(() => resolve(sampleUser), 1000);
-  });
+function configurePermissions(aurelia: Aurelia, permissionsStore: PermissionsStore, configuration: Configuration) {
+  configuration.setDefaultRedirectRoute('not-authorized');
 
-  aurelia.use
-    .plugin('aurelia-permission', (permissionsStore: PermissionsStore, configuration: Configuration) => {
-      configuration.setDefaultRedirectRoute('not-authorized');
+  userPromise
+    .then((user: any) => {
+      permissionsStore.definePermissions(
+        ['addUsers', 'deleteUsers', 'listUsers'],
+        // simple definition, the same for all permissions
+        // it only checks if particular permission is in user's permissions array
+        (permission: string) => user.permissions.includes(permission)
+      );
 
-      permissionsStore.definePermissions(['addUsers', 'deleteUsers', 'listUsers'], (permission: string) => {
-        return userPromise
-          .then((user: any) => {
-            const hasPermission = user.permissions.includes(permission);
-
-            if (!hasPermission) {
-              return Promise.reject(new Error('Current user has no required permissions.'));
-            }
-
-            return Promise.resolve(user);
-          });
-      });
+      return user;
     });
 }
 ```
@@ -115,4 +121,24 @@ or setting **redirectTo** property to define route to redirect to in case user i
 
 // The following input element will be disabled when user has neither listUsers nor deleteUsers permissions
 <input type="text" permission="only: listUsers, deleteUsers; disable.bind: true">
+```
+
+## Use AuthorizeService to implement custom logic
+
+```js
+import { AuthorizeService } from 'aurelia-permission';
+
+// Inject service via aurelia dependency injection
+constructor(private authorizeService: AuthorizeService) { }
+
+// Then use it in the ViewModel code
+// i.e. define route in child router that will only be visible in navbar menu
+// when user has 'listUsers' permission defined
+{
+  route: 'child-router',
+  name: 'child-router',
+  moduleId: 'child-router',
+  nav: this.authorizeService.isAuthorized('listUsers'),
+  title: 'Child Router'
+}
 ```
