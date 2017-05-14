@@ -1,8 +1,9 @@
-import { autoinject } from 'aurelia-framework';
+import { autoinject, customAttribute } from 'aurelia-framework';
 
 import AuthorizeService from './authorize-service';
 
 @autoinject()
+@customAttribute('permission-only')
 export class PermissionOnly {
 
   public static StyleAttributeName = 'style';
