@@ -14,6 +14,9 @@ export interface PermissionRoute extends RouteConfig {
 
 @autoinject()
 export default class AuthorizeRouteStep {
+
+  private defaultRedirectRoute = '';
+
   constructor(private authorizeService: AuthorizeService) { }
 
   run(routingContext, next: Next) {
@@ -28,6 +31,10 @@ export default class AuthorizeRouteStep {
 
     return this.authorizeService.isAuthorized(...permissionConfig.only)
       .then(() => next())
-      .catch(() => next.cancel(new Redirect(permissionConfig.redirectTo || '')));
+      .catch(() => next.cancel(new Redirect(permissionConfig.redirectTo || this.defaultRedirectRoute)));
+  }
+
+  setDefaultRedirectRoute(route: string) {
+    this.defaultRedirectRoute = route;
   }
 }
