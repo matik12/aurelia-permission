@@ -26,7 +26,7 @@ typings install github:matik12/aurelia-permission --save
 
 # Usage guide
 
-## Update the Aurelia configuration file
+## Configure plugin in main configuration file & define avaiable permissions using PermissionsStore
 
 In your Aurelia configuration file(most commonly main file) add the plugin and provide configuration for user permissions :
 ```js
@@ -63,15 +63,22 @@ export function configure(aurelia: Aurelia) {
 }
 
 function configurePermissions(aurelia: Aurelia, permissionsStore: PermissionsStore, configuration: Configuration) {
-  configuration.setDefaultRedirectRoute('not-authorized');
+  configuration.useDefaultRedirectRoute('not-authorized');
 
   userPromise
     .then((user: any) => {
+      const allApplicationPermissions = ['addUsers', 'deleteUsers', 'listUsers'];
+
       permissionsStore.definePermissions(
-        ['addUsers', 'deleteUsers', 'listUsers'],
-        // simple definition, the same for all permissions
-        // it only checks if particular permission is in user's permissions array
-        (permission: string) => user.permissions.includes(permission)
+        allApplicationPermissions,
+        // simple custom definition, the same function for all permissions
+        // it only checks if particular permission is included in user's permissions array
+        // if permissions need to have different definitions, then use
+        // permissionsStore.definePermissions() method for each specific permission
+        (permission: string) => {
+          console.log('Custom definition function');
+          return user.permissions.includes(permission)
+        }
       );
 
       return user;
@@ -82,7 +89,25 @@ function configurePermissions(aurelia: Aurelia, permissionsStore: PermissionsSto
 **Note:** When listing 'only' acceptable permissions in route or in custom attribute the default logical operator is OR.
 This means that if any of the listed permissions is set then user is authorized to see / use element or navigate to particular route.
 
-## Configure routing to use authorization
+## Use default permission definition
+
+When defining user permissions, it is possible to use default definition function instead of providing custom implementation as above.
+This default definition function simplly checks if particular permission exists in the supplied string array of user permissions.
+If this is the case, use code as shown below to simplify implementation and plugin configuration.
+
+```js
+userPromise
+  .then((user: any) => {
+    const allApplicationPermissions = ['addUsers', 'deleteUsers', 'listUsers'];
+
+    permissionsStore.useDefaultDefinition(user.permissions);
+    permissionsStore.definePermissions(allApplicationPermissions);
+
+    return user;
+  });
+```
+
+## Secure page routes using user permissions authorization
 
 Using list of permissions and default redirect route if user is not authorized.
 
@@ -111,7 +136,7 @@ or setting **redirectTo** property to define route to redirect to in case user i
 }
 ```
 
-## Hide or disable elements in HTML based on defined permissions
+## Hide or disable elements in HTML based on user permissions
 
 ```html
 <div permission="only: addUsers">Can add users!</div>
@@ -123,7 +148,7 @@ or setting **redirectTo** property to define route to redirect to in case user i
 <input type="text" permission="only: listUsers, deleteUsers; disable.bind: true">
 ```
 
-## Use AuthorizeService to implement custom logic
+## Use AuthorizeService to implement custom application logic
 
 ```js
 import { AuthorizeService } from 'aurelia-permission';
@@ -140,5 +165,28 @@ constructor(private authorizeService: AuthorizeService) { }
   moduleId: 'child-router',
   nav: this.authorizeService.isAuthorized('listUsers'),
   title: 'Child Router'
+}
+```
+
+## API of plugin exported PermissionsStore & AuthorizeService classes
+
+```js
+export interface PermissionDefinition {
+    permission: string;
+    definition: () => boolean;
+}
+
+export default class PermissionStore {
+    static DefaultDefinition: (permissions: string[]) => (permission: string) => any;
+    definePermission(permission: string, definition?: () => boolean): void;
+    definePermissions(permissions: string[], definition?: (permission: string) => boolean): void;
+    getDefinition(permission: string): () => boolean;
+    useDefaultDefinition(permissions: string[]): void;
+}
+```
+
+```js
+export default class AuthorizeService {
+    isAuthorized(...permissions: string[]): boolean;
 }
 ```

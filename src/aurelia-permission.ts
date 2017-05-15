@@ -6,7 +6,7 @@ import AuthorizeRouteStep from './authorize-route-step';
 import AuthorizeService from './authorize-service';
 
 export interface Configuration {
-  setDefaultRedirectRoute: (route: string) => void;
+  useDefaultRedirectRoute: (route: string) => void;
 }
 
 export function configure(
@@ -17,8 +17,8 @@ export function configure(
   const authorizeRouteStep = <AuthorizeRouteStep>framework.container.get(AuthorizeRouteStep);
 
   configure(permissionsStore, {
-    setDefaultRedirectRoute: (route: string) => {
-      authorizeRouteStep.setDefaultRedirectRoute(route);
+    useDefaultRedirectRoute: (route: string) => {
+      authorizeRouteStep.useDefaultRedirectRoute(route);
     }
   });
 

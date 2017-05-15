@@ -34,7 +34,7 @@ export default class AuthorizeRouteStep {
     return next.cancel(new Redirect(permissionConfig.redirectTo || this.defaultRedirectRoute));
   }
 
-  setDefaultRedirectRoute(route: string) {
+  useDefaultRedirectRoute(route: string) {
     this.defaultRedirectRoute = route;
   }
 }
