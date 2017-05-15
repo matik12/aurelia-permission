@@ -1,10 +1,16 @@
 export interface PermissionDefinition {
     permission: string;
-    definition: () => Promise<any>;
+    definition: () => boolean;
 }
 export default class PermissionStore {
+    static DefaultDefinition: (permissions: string[]) => (permission: string) => any;
     private permissionDefinitions;
-    definePermission(permission: string, definition: () => Promise<any>): void;
-    definePermissions(permissions: string[], definition: (permission: string) => Promise<any>): void;
-    getDefinition(permission: string): () => Promise<any>;
+    private defaultDefinition;
+    private permissionObject;
+    useDefaultDefinition(permissions: string[]): void;
+    definePermission(permission: string, definition?: () => boolean): void;
+    definePermissions(permissions: string[], definition?: (permission: string) => boolean): void;
+    definePermissionObject(permissionObject: any, definition?: (permission: string) => boolean): void;
+    getDefinition(permission: string): () => boolean;
+    getPermissionName(permission: string): any;
 }

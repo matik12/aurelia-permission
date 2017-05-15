@@ -1,6 +1,7 @@
 import { autoinject, customAttribute, bindable } from 'aurelia-framework';
 
 import AuthorizeService from './authorize-service';
+import PermissionStore from './permission-store';
 
 // Sample usages:
 // permission="only: addUsers"
@@ -26,20 +27,31 @@ export class Permission {
   private onNotAuthorized = this.hideElement;
   private onAuthorized = this.showElement;
 
-  constructor(element: Element, private authorizeService: AuthorizeService) {
+  constructor(
+    element: Element,
+    private authorizeService: AuthorizeService,
+    private permissionStore: PermissionStore
+  ) {
     this.element = element;
   }
 
   bind() {
-    this.disableChanged();
-
+    this.onBind();
     this.onNotAuthorized();
-    this.authorizeService.isAuthorized(...this.onlyPermissions)
-      .then(() => this.onAuthorized())
-      .catch(() => { /* Do just nothing, because element is already in not authorized state */ });
+
+    const permissions = this.onlyPermissions.map(permission => this.permissionStore.getPermissionName(permission));
+    const isAuthorized = this.authorizeService.isAuthorized(...permissions);
+
+    if (isAuthorized) {
+      this.onAuthorized();
+    }
   }
 
-  disableChanged() {
+  onBind() {
+    this.updateDisableBehaviour();
+  }
+
+  updateDisableBehaviour() {
     if (this.disable) {
       this.onNotAuthorized = this.disableElement;
       this.onAuthorized = this.enableElement;

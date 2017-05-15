@@ -13,5 +13,5 @@ export default class AuthorizeRouteStep {
     private defaultRedirectRoute;
     constructor(authorizeService: AuthorizeService);
     run(routingContext: any, next: Next): Promise<any>;
-    setDefaultRedirectRoute(route: string): void;
+    useDefaultRedirectRoute(route: string): void;
 }

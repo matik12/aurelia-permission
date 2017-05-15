@@ -1,8 +1,8 @@
 import { FrameworkConfiguration } from 'aurelia-framework';
-import PermissionsStore from './permission-store';
+import PermissionStore from './permission-store';
 import AuthorizeService from './authorize-service';
 export interface Configuration {
-    setDefaultRedirectRoute: (route: string) => void;
+    useDefaultRedirectRoute: (route: string) => void;
 }
-export declare function configure(framework: FrameworkConfiguration, configure: (permissionsStore: PermissionsStore, configuration: Configuration) => void): void;
-export { PermissionsStore, AuthorizeService };
+export declare function configure(framework: FrameworkConfiguration, configure: (permissionStore: PermissionStore, configuration: Configuration) => void): void;
+export { PermissionStore, AuthorizeService };

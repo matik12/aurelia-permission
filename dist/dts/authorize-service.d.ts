@@ -1,7 +1,7 @@
-import PermissionsStore from './permission-store';
+import PermissionStore from './permission-store';
 export default class AuthorizeService {
-    private permissionsStore;
-    constructor(permissionsStore: PermissionsStore);
-    isAuthorized(...permissions: string[]): Promise<any>;
+    private permissionStore;
+    constructor(permissionStore: PermissionStore);
+    isAuthorized(...permissions: string[]): boolean;
     private getPermissionDefinitions(onlyAuthorizePermissions);
 }

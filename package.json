@@ -1,6 +1,6 @@
 {
   "name": "aurelia-permission",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Plugin for user authorization based on defined permissions",
   "keywords": [
     "aurelia",
