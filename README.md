@@ -89,7 +89,7 @@ function configurePermissions(aurelia: Aurelia, permissionStore: PermissionStore
 **Note:** When listing 'only' acceptable permissions in route or in custom attribute the default logical operator is OR.
 This means that if any of the listed permissions is set then user is authorized to see / use element or navigate to particular route.
 
-## Use default permission definition
+## Default permission definition usage
 
 When defining user permissions, it is possible to use default definition function instead of providing custom implementation as above.
 This default definition function simplly checks if particular permission exists in the supplied string array of user permissions.
@@ -106,6 +106,58 @@ userPromise
     return user;
   });
 ```
+
+## Enum like permission object usage
+
+It is possible to create enum like permission object with all permissions to use it in diffrent authorization configurations instead of **magic strings** - string permisssion names, that are returned from API and can change.
+First define module (or scoped object, but module is recommended), which defines all application permissions as values of object properites as in sample below.
+
+```js
+const UserPermission = {
+  AddUsers: 'Add_Users',
+  DeleteUsers: 'Delete_Users',
+  ListUsers: 'List_Users',
+}
+```
+
+Then in plugin configuration in permission store leverage usage of **definePermissionObject** instead of **definePermissions** method as follows:
+
+```js
+function configurePermissions(aurelia: Aurelia, permissionStore: PermissionStore, configuration: Configuration) {
+  configuration.useDefaultRedirectRoute('not-authorized');
+
+  userPromise
+    .then((user: any) => {
+      permissionStore.useDefaultDefinition(user.permissions);
+      permissionStore.definePermissionObject(UserPermission /*, provide custom definition if needed or use default one as in setup above */)
+
+      return user;
+    });
+```
+
+Later on, use permission object properties i.e. when securing app routes
+
+```js
+{
+  route: 'users', name: 'users', moduleId: 'users', nav: true, title: 'Github Users',
+  settings: {
+    permission: {
+      only: [UserPermission.ListUsers]
+    }
+  }
+}
+```
+
+**Note:** When permission object is set, then listed 'only' authorize permission names in custom attribute **permission** must be permission object property names not values (actual API string permisssion names) i.e.
+```html
+// correct usage
+<div permission="only: AddUsers">Can add users!</div>
+
+// incorrect usage in case of permission object setup, otherwise it is a correct setup
+<div permission="only: Add_Users">Can add users!</div>
+```
+
+This object method will define permissions for all values of properites
 
 ## Secure page routes using user permissions authorization
 
@@ -178,10 +230,12 @@ export interface PermissionDefinition {
 
 export default class PermissionStore {
     static DefaultDefinition: (permissions: string[]) => (permission: string) => any;
+    useDefaultDefinition(permissions: string[]): void;
     definePermission(permission: string, definition?: () => boolean): void;
     definePermissions(permissions: string[], definition?: (permission: string) => boolean): void;
+    definePermissionObject(permissionObject: any, definition?: (permission: string) => boolean): void;
     getDefinition(permission: string): () => boolean;
-    useDefaultDefinition(permissions: string[]): void;
+    getPermissionName(permission: string): any;
 }
 ```
 
@@ -190,3 +244,9 @@ export default class AuthorizeService {
     isAuthorized(...permissions: string[]): boolean;
 }
 ```
+
+## Feature possible improvements
+
+- [ ] Broadcast events on route navigation canceled - redirect and activating next route
+- [ ] Support defining roles containg list of permissions
+- [ ] Route permission configuration on parent route to protect all child routes with one definition ???

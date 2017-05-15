@@ -12,6 +12,12 @@ export default class PermissionStore {
   private permissionDefinitions: PermissionDefinition[] = [];
   private defaultDefinition: (permission: string) => boolean;
 
+  private permissionObject: any;
+
+  useDefaultDefinition(permissions: string[]) {
+    this.defaultDefinition = PermissionStore.DefaultDefinition(permissions);
+  }
+
   definePermission(permission: string, definition?: () => boolean) {
     const definitions = this.permissionDefinitions.filter(pd => pd.permission === permission);
 
@@ -40,13 +46,22 @@ export default class PermissionStore {
     });
   }
 
+  definePermissionObject(permissionObject: any, definition?: (permission: string) => boolean) {
+    this.permissionObject = permissionObject;
+    const permissions = Object.getOwnPropertyNames(permissionObject).map(permission => permissionObject[permission]);
+
+    this.definePermissions(permissions, definition);
+  }
+
   getDefinition(permission: string): () => boolean {
     const permissionDefinition = this.permissionDefinitions.find(rd => rd.permission === permission);
 
     return permissionDefinition ? permissionDefinition.definition : null;
   }
 
-  useDefaultDefinition(permissions: string[]) {
-    this.defaultDefinition = PermissionStore.DefaultDefinition(permissions);
+  getPermissionName(permission: string) {
+    return this.permissionObject ?
+      this.permissionObject[permission] :
+      permission;
   }
 }
