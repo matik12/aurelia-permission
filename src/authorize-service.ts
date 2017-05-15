@@ -1,10 +1,10 @@
 import { autoinject } from 'aurelia-dependency-injection';
 
-import PermissionsStore from './permission-store';
+import PermissionStore from './permission-store';
 
 @autoinject()
 export default class AuthorizeService {
-  constructor(private permissionsStore: PermissionsStore) { }
+  constructor(private permissionStore: PermissionStore) { }
 
   isAuthorized(...permissions: string[]): boolean {
     const permissionDefinitions: boolean[] = this.getPermissionDefinitions(permissions);
@@ -22,7 +22,7 @@ export default class AuthorizeService {
     const permissionDefinitions: boolean[] = [];
 
     onlyAuthorizePermissions.forEach(permission => {
-      const permissionDefinition = this.permissionsStore.getDefinition(permission);
+      const permissionDefinition = this.permissionStore.getDefinition(permission);
 
       if (permissionDefinition) {
         permissionDefinitions.push(permissionDefinition());

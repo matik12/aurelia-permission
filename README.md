@@ -26,11 +26,11 @@ typings install github:matik12/aurelia-permission --save
 
 # Usage guide
 
-## Configure plugin in main configuration file & define avaiable permissions using PermissionsStore
+## Configure plugin in main configuration file & define avaiable permissions using PermissionStore
 
 In your Aurelia configuration file(most commonly main file) add the plugin and provide configuration for user permissions :
 ```js
-import { PermissionsStore, Configuration } from 'aurelia-permission';
+import { PermissionStore, Configuration } from 'aurelia-permission';
 
 const sampleUser = {
   id: 1,
@@ -49,8 +49,8 @@ export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
-    .plugin('aurelia-permission', (permissionsStore: PermissionsStore, configuration: Configuration) =>
-      configurePermissions(aurelia, permissionsStore, configuration));
+    .plugin('aurelia-permission', (permissionStore: PermissionStore, configuration: Configuration) =>
+      configurePermissions(aurelia, permissionStore, configuration));
 
   aurelia.start().then(() => aurelia.setRoot());
 
@@ -62,19 +62,19 @@ export function configure(aurelia: Aurelia) {
   });
 }
 
-function configurePermissions(aurelia: Aurelia, permissionsStore: PermissionsStore, configuration: Configuration) {
+function configurePermissions(aurelia: Aurelia, permissionStore: PermissionStore, configuration: Configuration) {
   configuration.useDefaultRedirectRoute('not-authorized');
 
   userPromise
     .then((user: any) => {
       const allApplicationPermissions = ['addUsers', 'deleteUsers', 'listUsers'];
 
-      permissionsStore.definePermissions(
+      permissionStore.definePermissions(
         allApplicationPermissions,
         // simple custom definition, the same function for all permissions
         // it only checks if particular permission is included in user's permissions array
         // if permissions need to have different definitions, then use
-        // permissionsStore.definePermissions() method for each specific permission
+        // permissionStore.definePermissions() method for each specific permission
         (permission: string) => {
           console.log('Custom definition function');
           return user.permissions.includes(permission)
@@ -100,8 +100,8 @@ userPromise
   .then((user: any) => {
     const allApplicationPermissions = ['addUsers', 'deleteUsers', 'listUsers'];
 
-    permissionsStore.useDefaultDefinition(user.permissions);
-    permissionsStore.definePermissions(allApplicationPermissions);
+    permissionStore.useDefaultDefinition(user.permissions);
+    permissionStore.definePermissions(allApplicationPermissions);
 
     return user;
   });
@@ -168,7 +168,7 @@ constructor(private authorizeService: AuthorizeService) { }
 }
 ```
 
-## API of plugin exported PermissionsStore & AuthorizeService classes
+## API of plugin exported PermissionStore & AuthorizeService classes
 
 ```js
 export interface PermissionDefinition {

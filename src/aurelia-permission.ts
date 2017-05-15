@@ -1,7 +1,7 @@
 import { FrameworkConfiguration } from 'aurelia-framework';
 import { AppRouter } from 'aurelia-router';
 
-import PermissionsStore from './permission-store';
+import PermissionStore from './permission-store';
 import AuthorizeRouteStep from './authorize-route-step';
 import AuthorizeService from './authorize-service';
 
@@ -11,12 +11,12 @@ export interface Configuration {
 
 export function configure(
   framework: FrameworkConfiguration,
-  configure: (permissionsStore: PermissionsStore, configuration: Configuration) => void
+  configure: (permissionStore: PermissionStore, configuration: Configuration) => void
 ) {
-  const permissionsStore = <PermissionsStore>framework.container.get(PermissionsStore);
+  const permissionStore = <PermissionStore>framework.container.get(PermissionStore);
   const authorizeRouteStep = <AuthorizeRouteStep>framework.container.get(AuthorizeRouteStep);
 
-  configure(permissionsStore, {
+  configure(permissionStore, {
     useDefaultRedirectRoute: (route: string) => {
       authorizeRouteStep.useDefaultRedirectRoute(route);
     }
@@ -31,6 +31,6 @@ export function configure(
 }
 
 export {
-  PermissionsStore,
+  PermissionStore,
   AuthorizeService
 }
