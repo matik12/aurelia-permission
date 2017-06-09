@@ -3,7 +3,7 @@ import { autoinject } from 'aurelia-dependency-injection';
 import PermissionStore from './permission-store';
 
 @autoinject()
-export default class AuthorizeService {
+export default class AuthorizationService {
   constructor(private permissionStore: PermissionStore) { }
 
   isAuthorized(...permissions: string[]): boolean {

@@ -200,13 +200,13 @@ or setting **redirectTo** property to define route to redirect to in case user i
 <input type="text" permission="only: listUsers, deleteUsers; disable.bind: true">
 ```
 
-## Use AuthorizeService to implement custom application logic
+## Use AuthorizationService to implement custom application logic
 
 ```js
-import { AuthorizeService } from 'aurelia-permission';
+import { AuthorizationService } from 'aurelia-permission';
 
 // Inject service via aurelia dependency injection
-constructor(private authorizeService: AuthorizeService) { }
+constructor(private authorizationService: AuthorizationService) { }
 
 // Then use it in the ViewModel code
 // i.e. define route in child router that will only be visible in navbar menu
@@ -215,12 +215,12 @@ constructor(private authorizeService: AuthorizeService) { }
   route: 'child-router',
   name: 'child-router',
   moduleId: 'child-router',
-  nav: this.authorizeService.isAuthorized('listUsers'),
+  nav: this.authorizationService.isAuthorized('listUsers'),
   title: 'Child Router'
 }
 ```
 
-## API of plugin exported PermissionStore & AuthorizeService classes
+## API of plugin exported PermissionStore & AuthorizationService classes
 
 ```js
 export interface PermissionDefinition {
@@ -240,7 +240,7 @@ export default class PermissionStore {
 ```
 
 ```js
-export default class AuthorizeService {
+export default class AuthorizationService {
     isAuthorized(...permissions: string[]): boolean;
 }
 ```
