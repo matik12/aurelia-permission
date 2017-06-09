@@ -1,7 +1,7 @@
-import AuthorizeService from './authorize-service';
+import AuthorizationService from './authorization-service';
 import PermissionStore from './permission-store';
 export declare class Permission {
-    private authorizeService;
+    private authorizationService;
     private permissionStore;
     static Separator: string;
     only: string;
@@ -10,7 +10,7 @@ export declare class Permission {
     private element;
     private onNotAuthorized;
     private onAuthorized;
-    constructor(element: Element, authorizeService: AuthorizeService, permissionStore: PermissionStore);
+    constructor(element: Element, authorizationService: AuthorizationService, permissionStore: PermissionStore);
     bind(): void;
     onBind(): void;
     updateDisableBehaviour(): void;

@@ -1,5 +1,5 @@
 import { Next, RouteConfig } from 'aurelia-router';
-import AuthorizeService from './authorize-service';
+import AuthorizationService from './authorization-service';
 export interface PermissionRoute extends RouteConfig {
     settings: {
         permission: {
@@ -9,9 +9,9 @@ export interface PermissionRoute extends RouteConfig {
     };
 }
 export default class AuthorizeRouteStep {
-    private authorizeService;
+    private authorizationService;
     private defaultRedirectRoute;
-    constructor(authorizeService: AuthorizeService);
+    constructor(authorizationService: AuthorizationService);
     run(routingContext: any, next: Next): Promise<any>;
     useDefaultRedirectRoute(route: string): void;
 }

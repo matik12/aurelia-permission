@@ -3,7 +3,7 @@ import { AppRouter } from 'aurelia-router';
 
 import PermissionStore from './permission-store';
 import AuthorizeRouteStep from './authorize-route-step';
-import AuthorizeService from './authorize-service';
+import AuthorizationService from './authorization-service';
 
 export interface Configuration {
   useDefaultRedirectRoute: (route: string) => void;
@@ -32,5 +32,5 @@ export function configure(
 
 export {
   PermissionStore,
-  AuthorizeService
+  AuthorizationService
 }

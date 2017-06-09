@@ -1,7 +1,7 @@
 import { autoinject } from 'aurelia-dependency-injection';
 import { Redirect, Next, RouteConfig } from 'aurelia-router';
 
-import AuthorizeService from './authorize-service';
+import AuthorizationService from './authorization-service';
 
 export interface PermissionRoute extends RouteConfig {
   settings: {
@@ -17,7 +17,7 @@ export default class AuthorizeRouteStep {
 
   private defaultRedirectRoute = '';
 
-  constructor(private authorizeService: AuthorizeService) { }
+  constructor(private authorizationService: AuthorizationService) { }
 
   run(routingContext, next: Next) {
     const toRoute: PermissionRoute = routingContext.config;
@@ -25,7 +25,7 @@ export default class AuthorizeRouteStep {
     const permissionConfig = routeHasConfig ? toRoute.settings.permission : null;
 
     const noRoutePermissionsSet = !routeHasConfig;
-    const isAuthorized = permissionConfig === null || this.authorizeService.isAuthorized(...permissionConfig.only);
+    const isAuthorized = permissionConfig === null || this.authorizationService.isAuthorized(...permissionConfig.only);
 
     if (noRoutePermissionsSet || isAuthorized) {
       return next();
