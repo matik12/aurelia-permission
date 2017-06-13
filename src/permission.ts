@@ -5,7 +5,7 @@ import PermissionStore from './permission-store';
 
 // Sample usages:
 // permission="only: addUsers"
-// permission="only: addUsers, deleteUsers; disable.bind: true"
+// permission="only: addUsers, deleteUsers; disable.bind: true; is-active.bind: true"
 
 @autoinject()
 @customAttribute('permission')
@@ -15,6 +15,7 @@ export class Permission {
 
   @bindable only: string;
   @bindable disable = false;
+  @bindable isActive = true;
 
   get onlyPermissions(): string[] {
     return this.only ?
@@ -36,6 +37,10 @@ export class Permission {
   }
 
   bind() {
+    if (!this.isActive) {
+      return;
+    }
+
     this.onBind();
     this.onNotAuthorized();
 

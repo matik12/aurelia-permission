@@ -188,7 +188,7 @@ or setting **redirectTo** property to define route to redirect to in case user i
 }
 ```
 
-## Hide or disable elements in HTML based on user permissions
+## Hide or disable elements in HTML templates based on user permissions
 
 ```html
 <div permission="only: addUsers">Can add users!</div>
@@ -198,6 +198,9 @@ or setting **redirectTo** property to define route to redirect to in case user i
 
 // The following input element will be disabled when user has neither listUsers nor deleteUsers permissions
 <input type="text" permission="only: listUsers, deleteUsers; disable.bind: true">
+
+// It is also possible to turn off permission check during attach lifecycle using is-active binded to ViewModel, where some conditions are met
+<input type="text" permission="only: addUsers, deleteUsers; disable.bind: true; is-active.bind: true">
 ```
 
 ## Use AuthorizationService to implement custom application logic
