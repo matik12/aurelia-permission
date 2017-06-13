@@ -220,6 +220,17 @@ constructor(private authorizationService: AuthorizationService) { }
 }
 ```
 
+## Use PermissionFilter value converter for dynamic menu generation or to filter out route collections
+
+Plugin provides value converter for filtering out menu items or any collection based on permission only settings property.
+This converter can be applied on child routers as well i.e. when you generate tabs based on child routes. Sample value converter usage is shown below.
+
+```html
+<li repeat.for="navigationItem of router.navigation | permissionFilter" class="navbar__item">
+  <a href.bind="navigationItem.href" class="navbar__link"></a>
+</li>
+```
+
 ## API of plugin exported PermissionStore & AuthorizationService classes
 
 ```js
@@ -248,5 +259,5 @@ export default class AuthorizationService {
 ## Feature possible improvements
 
 - [ ] Broadcast events on route navigation canceled - redirect and activating next route
-- [ ] Support defining roles containg list of permissions
+- [ ] Support defining roles containing list of permissions
 - [ ] Route permission configuration on parent route to protect all child routes with one definition ???

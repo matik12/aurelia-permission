@@ -27,7 +27,10 @@ export function configure(
   const authorizePipelineStep = appRouter.pipelineProvider.steps.find(step => { return step.slotName === 'preActivate'; });
   authorizePipelineStep.steps.push(AuthorizeRouteStep);
 
-  framework.globalResources('./permission');
+  framework.globalResources([
+    './permission',
+    './permission-filter'
+  ]);
 }
 
 export {
