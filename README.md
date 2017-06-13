@@ -188,6 +188,8 @@ or setting **redirectTo** property to define route to redirect to in case user i
 }
 ```
 
+**Note:** It is possible to set permission settings only on parent route to protect all child routes using the same set of permissions. What is more, this permission settings can be overwritten in child route. Child route can define permission settings and its permissions will be used, otherwise parent routes permissions will be processed. If no permissions are set, then access is granted.
+
 ## Hide or disable elements in HTML templates based on user permissions
 
 ```html
@@ -263,4 +265,4 @@ export default class AuthorizationService {
 
 - [ ] Broadcast events on route navigation canceled - redirect and activating next route
 - [ ] Support defining roles containing list of permissions
-- [ ] Route permission configuration on parent route to protect all child routes with one definition ???
+- [x] Route permission configuration on parent route to protect all child routes with one definition
