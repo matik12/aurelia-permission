@@ -6,6 +6,7 @@ export declare class Permission {
     static Separator: string;
     only: string;
     disable: boolean;
+    isActive: boolean;
     readonly onlyPermissions: string[];
     private element;
     private onNotAuthorized;

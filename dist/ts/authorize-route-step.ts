@@ -19,19 +19,23 @@ export default class AuthorizeRouteStep {
 
   constructor(private authorizationService: AuthorizationService) { }
 
-  run(routingContext, next: Next) {
-    const toRoute: PermissionRoute = routingContext.config;
-    const routeHasConfig = toRoute.settings && toRoute.settings.permission;
-    const permissionConfig = routeHasConfig ? toRoute.settings.permission : null;
+  run(navigationInstruction, next: Next) {
+    const allInstructions = navigationInstruction.getAllInstructions().reverse();
+    const permissionInstruction = allInstructions.find(instruction => this.hasPermissionSettings(instruction.config));
+    const permissionSettings = permissionInstruction ? permissionInstruction.config.settings.permission : null;
 
-    const noRoutePermissionsSet = !routeHasConfig;
-    const isAuthorized = permissionConfig === null || this.authorizationService.isAuthorized(...permissionConfig.only);
+    const noRoutePermissionsSet = !permissionInstruction;
+    const isAuthorized = permissionSettings === null || this.authorizationService.isAuthorized(...permissionSettings.only);
 
     if (noRoutePermissionsSet || isAuthorized) {
       return next();
     }
 
-    return next.cancel(new Redirect(permissionConfig.redirectTo || this.defaultRedirectRoute));
+    return next.cancel(new Redirect(permissionSettings.redirectTo || this.defaultRedirectRoute));
+  }
+
+  hasPermissionSettings(instructionConfig) {
+    return instructionConfig.settings && instructionConfig.settings.permission;
   }
 
   useDefaultRedirectRoute(route: string) {
