@@ -4,12 +4,8 @@ import { AppRouter } from 'aurelia-router';
 import PermissionStore from './permission-store';
 import AuthorizeRouteStep from './authorize-route-step';
 import AuthorizationService from './authorization-service';
-
-// Import global resources for better plugin bundling and tracing dependencies
-/* tslint:disable */
 import { Permission } from './permission';
 import { PermissionFilterValueConverter } from './permission-filter';
-/* tslint:enable */
 
 export interface Configuration {
   useDefaultRedirectRoute: (route: string) => void;
@@ -41,5 +37,7 @@ export function configure(
 
 export {
   PermissionStore,
-  AuthorizationService
+  AuthorizationService,
+  Permission,
+  PermissionFilterValueConverter
 }
