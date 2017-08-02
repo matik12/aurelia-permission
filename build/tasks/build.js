@@ -20,14 +20,13 @@ function buildFromTs(tsProject, outputPath, includeEs6Dts) {
     var src = paths.dtsSrc.concat(paths.source);
     var tsResult = gulp.src(src)
         .pipe(plumber())
-        .pipe(sourcemaps.init({loadMaps: true}))    
+        .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(changed(outputPath, {extension: '.js'}))
         .pipe(tsProject());
 
     return merge([
         tsResult.dts.pipe(gulp.dest(paths.output + 'dts')),
-        tsResult.js.pipe(sourcemaps.write({includeContent: true}))
-            .pipe(gulp.dest(outputPath))
+        tsResult.js.pipe(gulp.dest(outputPath))
     ]);
 }
 
