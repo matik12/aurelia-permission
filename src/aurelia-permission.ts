@@ -4,7 +4,8 @@ import { AppRouter } from 'aurelia-router';
 import PermissionStore from './permission-store';
 import AuthorizeRouteStep from './authorize-route-step';
 import AuthorizationService from './authorization-service';
-import { Permission } from './permission';
+import { GlobalPermissionShow } from './global-permission-show';
+import { GlobalPermissionEnable } from './global-permission-enable';
 import { PermissionFilterValueConverter } from './permission-filter';
 
 export interface Configuration {
@@ -30,7 +31,8 @@ export function configure(
   authorizePipelineStep.steps.push(AuthorizeRouteStep);
 
   framework.globalResources([
-    './permission',
+    './global-permission-show',
+    './global-permission-enable',
     './permission-filter'
   ]);
 }
@@ -38,6 +40,7 @@ export function configure(
 export {
   PermissionStore,
   AuthorizationService,
-  Permission,
+  GlobalPermissionShow,
+  GlobalPermissionEnable,
   PermissionFilterValueConverter
 }

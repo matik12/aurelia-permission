@@ -18,6 +18,12 @@ export default class AuthorizationService {
     return false;
   }
 
+  isAuthorizedByPermissionName(permissionNames: string[]): boolean {
+    const permissions = permissionNames.map(permission => this.permissionStore.getPermissionName(permission));
+
+    return this.isAuthorized(...permissions);
+  }
+
   private getPermissionDefinitions(onlyAuthorizePermissions: string[]): boolean[] {
     const permissionDefinitions: boolean[] = [];
 

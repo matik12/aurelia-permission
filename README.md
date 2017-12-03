@@ -109,8 +109,8 @@ userPromise
 
 ## Enum like permission object usage
 
-It is possible to create enum like permission object with all permissions to use it in diffrent authorization configurations instead of **magic strings** - string permisssion names, that are returned from API and can change.
-First define module (or scoped object, but module is recommended), which defines all application permissions as values of object properites as in sample below.
+It is possible to create enum like permission object with all permissions to use it in different authorization configurations instead of **magic strings** - string permission names, that are returned from API and can change.
+First define module (or scoped object, but module is recommended), which defines all application permissions as values of object properties as in sample below.
 
 ```js
 const UserPermission = {
@@ -148,16 +148,16 @@ Later on, use permission object properties i.e. when securing app routes
 }
 ```
 
-**Note:** When permission object is set, then listed 'only' authorize permission names in custom attribute **permission** must be permission object property names not values (actual API string permisssion names) i.e.
+**Note:** When permission object is set, then listed 'can' permission names in custom attribute **-global-permission-show** or **-global-permission-enable** must be permission object property names not values (actual API string permission names) i.e.
 ```html
 // correct usage
-<div permission="only: AddUsers">Can add users!</div>
+<div global-permission-show="can: AddUsers">Can add users!</div>
 
-// incorrect usage in case of permission object setup, otherwise it is a correct setup
-<div permission="only: Add_Users">Can add users!</div>
+// incorrect usage in case of permission object setup, otherwise it is a correct permission name
+<div global-permission-show="can: Add_Users">Can add users!</div>
 ```
 
-This object method will define permissions for all values of properites
+This object method will define permissions for all values of properties.
 
 ## Secure page routes using user permissions authorization
 
@@ -190,19 +190,19 @@ or setting **redirectTo** property to define route to redirect to in case user i
 
 **Note:** It is possible to set permission settings only on parent route to protect all child routes using the same set of permissions. What is more, this permission settings can be overwritten in child route. Child route can define permission settings and its permissions will be used, otherwise parent routes permissions will be processed. If no permissions are set, then access is granted.
 
-## Hide or disable elements in HTML templates based on user permissions
+## Hide or disable elements in HTML templates based on user global permissions
 
 ```html
-<div permission="only: addUsers">Can add users!</div>
-<div permission="only: deleteUsers">Can delete users!</div>
-<div permission="only: addUsers, deleteUsers">Can add or delete users!</div>
-<div permission="only: listUsers">Can list users!</div>
+<div global-permission-show="can: addUsers">Can add users!</div>
+<div global-permission-show="can: deleteUsers">Can delete users!</div>
+<div global-permission-show="can: addUsers, deleteUsers">Can add or delete users!</div>
+<div global-permission-show="can: listUsers">Can list users!</div>
 
 // The following input element will be disabled when user has neither listUsers nor deleteUsers permissions
-<input type="text" permission="only: listUsers, deleteUsers; disable.bind: true">
+<input type="text" global-permission-enable="can: listUsers, deleteUsers">
 
-// It is also possible to turn off permission check during attach lifecycle using is-active binded to ViewModel, where some conditions are met
-<input type="text" permission="only: addUsers, deleteUsers; disable.bind: true; is-active.bind: true">
+// It is also possible to turn off permission check during bind lifecycle using check bindable binded from ViewModel, where some user defined conditions are met
+<input type="text" global-permission-show="can: addUsers, deleteUsers; check.bind: true">
 ```
 
 ## Use AuthorizationService to implement custom application logic
