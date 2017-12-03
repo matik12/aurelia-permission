@@ -49,11 +49,11 @@ System.register([], function (exports_1, context_1) {
                         this.permissionObject[permission] :
                         permission;
                 };
+                PermissionStore.DefaultDefinition = function (permissions) {
+                    return function (permission) { return permissions.includes(permission); };
+                };
                 return PermissionStore;
             }());
-            PermissionStore.DefaultDefinition = function (permissions) {
-                return function (permission) { return permissions.includes(permission); };
-            };
             exports_1("default", PermissionStore);
         }
     };

@@ -48,12 +48,12 @@ System.register(["aurelia-dependency-injection", "aurelia-router", "./authorizat
                 AuthorizeRouteStep.prototype.useDefaultRedirectRoute = function (route) {
                     this.defaultRedirectRoute = route;
                 };
+                AuthorizeRouteStep = __decorate([
+                    aurelia_dependency_injection_1.autoinject(),
+                    __metadata("design:paramtypes", [authorization_service_1.default])
+                ], AuthorizeRouteStep);
                 return AuthorizeRouteStep;
             }());
-            AuthorizeRouteStep = __decorate([
-                aurelia_dependency_injection_1.autoinject(),
-                __metadata("design:paramtypes", [authorization_service_1.default])
-            ], AuthorizeRouteStep);
             exports_1("default", AuthorizeRouteStep);
         }
     };

@@ -38,6 +38,11 @@ System.register(["aurelia-dependency-injection", "./permission-store"], function
                     }
                     return false;
                 };
+                AuthorizationService.prototype.isAuthorizedByPermissionName = function (permissionNames) {
+                    var _this = this;
+                    var permissions = permissionNames.map(function (permission) { return _this.permissionStore.getPermissionName(permission); });
+                    return this.isAuthorized.apply(this, permissions);
+                };
                 AuthorizationService.prototype.getPermissionDefinitions = function (onlyAuthorizePermissions) {
                     var _this = this;
                     var permissionDefinitions = [];
@@ -49,12 +54,12 @@ System.register(["aurelia-dependency-injection", "./permission-store"], function
                     });
                     return permissionDefinitions;
                 };
+                AuthorizationService = __decorate([
+                    aurelia_dependency_injection_1.autoinject(),
+                    __metadata("design:paramtypes", [permission_store_1.default])
+                ], AuthorizationService);
                 return AuthorizationService;
             }());
-            AuthorizationService = __decorate([
-                aurelia_dependency_injection_1.autoinject(),
-                __metadata("design:paramtypes", [permission_store_1.default])
-            ], AuthorizationService);
             exports_1("default", AuthorizationService);
         }
     };

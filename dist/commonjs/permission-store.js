@@ -44,9 +44,9 @@ var PermissionStore = (function () {
             this.permissionObject[permission] :
             permission;
     };
+    PermissionStore.DefaultDefinition = function (permissions) {
+        return function (permission) { return permissions.includes(permission); };
+    };
     return PermissionStore;
 }());
-PermissionStore.DefaultDefinition = function (permissions) {
-    return function (permission) { return permissions.includes(permission); };
-};
 exports.default = PermissionStore;

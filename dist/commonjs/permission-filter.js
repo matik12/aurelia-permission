@@ -25,10 +25,10 @@ var PermissionFilterValueConverter = (function () {
         return (_a = this.authorizationService).isAuthorized.apply(_a, permissions);
         var _a;
     };
+    PermissionFilterValueConverter = __decorate([
+        aurelia_framework_1.autoinject(),
+        __metadata("design:paramtypes", [authorization_service_1.default])
+    ], PermissionFilterValueConverter);
     return PermissionFilterValueConverter;
 }());
-PermissionFilterValueConverter = __decorate([
-    aurelia_framework_1.autoinject(),
-    __metadata("design:paramtypes", [authorization_service_1.default])
-], PermissionFilterValueConverter);
 exports.PermissionFilterValueConverter = PermissionFilterValueConverter;

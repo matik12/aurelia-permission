@@ -34,11 +34,11 @@ define(["require", "exports", "aurelia-dependency-injection", "aurelia-router", 
         AuthorizeRouteStep.prototype.useDefaultRedirectRoute = function (route) {
             this.defaultRedirectRoute = route;
         };
+        AuthorizeRouteStep = __decorate([
+            aurelia_dependency_injection_1.autoinject(),
+            __metadata("design:paramtypes", [authorization_service_1.default])
+        ], AuthorizeRouteStep);
         return AuthorizeRouteStep;
     }());
-    AuthorizeRouteStep = __decorate([
-        aurelia_dependency_injection_1.autoinject(),
-        __metadata("design:paramtypes", [authorization_service_1.default])
-    ], AuthorizeRouteStep);
     exports.default = AuthorizeRouteStep;
 });
