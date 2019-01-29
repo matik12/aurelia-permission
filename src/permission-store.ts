@@ -48,9 +48,12 @@ export default class PermissionStore {
 
   definePermissionObject(permissionObject: any, definition?: (permission: string) => boolean) {
     this.permissionObject = permissionObject;
-    const permissions = Object.getOwnPropertyNames(permissionObject).map(permission => permissionObject[permission]);
 
-    this.definePermissions(permissions, definition);
+    if (definition) {
+      const permissions = Object.getOwnPropertyNames(permissionObject).map(permission => permissionObject[permission]);
+
+      this.definePermissions(permissions, definition);
+    }
   }
 
   getDefinition(permission: string): () => boolean {
