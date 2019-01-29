@@ -33,8 +33,10 @@ define(["require", "exports"], function (require, exports) {
         };
         PermissionStore.prototype.definePermissionObject = function (permissionObject, definition) {
             this.permissionObject = permissionObject;
-            var permissions = Object.getOwnPropertyNames(permissionObject).map(function (permission) { return permissionObject[permission]; });
-            this.definePermissions(permissions, definition);
+            if (definition) {
+                var permissions = Object.getOwnPropertyNames(permissionObject).map(function (permission) { return permissionObject[permission]; });
+                this.definePermissions(permissions, definition);
+            }
         };
         PermissionStore.prototype.getDefinition = function (permission) {
             var permissionDefinition = this.permissionDefinitions.find(function (rd) { return rd.permission === permission; });
