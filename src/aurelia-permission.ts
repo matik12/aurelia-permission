@@ -6,6 +6,7 @@ import AuthorizeRouteStep from './authorize-route-step';
 import AuthorizationService from './authorization-service';
 import { GlobalPermissionShow } from './global-permission-show';
 import { GlobalPermissionEnable } from './global-permission-enable';
+import { GlobalPermissionIf } from './global-permission-if';
 import { PermissionFilterValueConverter } from './permission-filter';
 
 export interface Configuration {
@@ -33,6 +34,7 @@ export function configure(
   framework.globalResources([
     './global-permission-show',
     './global-permission-enable',
+    './global-permission-if',
     './permission-filter'
   ]);
 }
@@ -42,5 +44,6 @@ export {
   AuthorizationService,
   GlobalPermissionShow,
   GlobalPermissionEnable,
+  GlobalPermissionIf,
   PermissionFilterValueConverter
 }

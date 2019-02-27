@@ -10,6 +10,8 @@ var global_permission_show_1 = require("./global-permission-show");
 exports.GlobalPermissionShow = global_permission_show_1.GlobalPermissionShow;
 var global_permission_enable_1 = require("./global-permission-enable");
 exports.GlobalPermissionEnable = global_permission_enable_1.GlobalPermissionEnable;
+var global_permission_if_1 = require("./global-permission-if");
+exports.GlobalPermissionIf = global_permission_if_1.GlobalPermissionIf;
 var permission_filter_1 = require("./permission-filter");
 exports.PermissionFilterValueConverter = permission_filter_1.PermissionFilterValueConverter;
 function configure(framework, configure) {
@@ -26,6 +28,7 @@ function configure(framework, configure) {
     framework.globalResources([
         './global-permission-show',
         './global-permission-enable',
+        './global-permission-if',
         './permission-filter'
     ]);
 }
