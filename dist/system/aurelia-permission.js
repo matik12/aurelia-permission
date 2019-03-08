@@ -1,4 +1,4 @@
-System.register(["aurelia-router", "./permission-store", "./authorize-route-step", "./authorization-service", "./global-permission-show", "./global-permission-enable", "./global-permission-if", "./permission-filter"], function (exports_1, context_1) {
+System.register(["aurelia-router", "./permission-store", "./authorize-route-step", "./authorization-service", "./global-permission-show", "./global-permission-enable", "./global-permission-if", "./global-permission-else", "./permission-filter"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     function configure(framework, configure) {
@@ -16,11 +16,12 @@ System.register(["aurelia-router", "./permission-store", "./authorize-route-step
             './global-permission-show',
             './global-permission-enable',
             './global-permission-if',
+            './global-permission-else',
             './permission-filter'
         ]);
     }
     exports_1("configure", configure);
-    var aurelia_router_1, permission_store_1, authorize_route_step_1, authorization_service_1, global_permission_show_1, global_permission_enable_1, global_permission_if_1, permission_filter_1;
+    var aurelia_router_1, permission_store_1, authorize_route_step_1, authorization_service_1, global_permission_show_1, global_permission_enable_1, global_permission_if_1, global_permission_else_1, permission_filter_1;
     return {
         setters: [
             function (aurelia_router_1_1) {
@@ -44,6 +45,9 @@ System.register(["aurelia-router", "./permission-store", "./authorize-route-step
             function (global_permission_if_1_1) {
                 global_permission_if_1 = global_permission_if_1_1;
             },
+            function (global_permission_else_1_1) {
+                global_permission_else_1 = global_permission_else_1_1;
+            },
             function (permission_filter_1_1) {
                 permission_filter_1 = permission_filter_1_1;
             }
@@ -54,6 +58,7 @@ System.register(["aurelia-router", "./permission-store", "./authorize-route-step
             exports_1("GlobalPermissionShow", global_permission_show_1.GlobalPermissionShow);
             exports_1("GlobalPermissionEnable", global_permission_enable_1.GlobalPermissionEnable);
             exports_1("GlobalPermissionIf", global_permission_if_1.GlobalPermissionIf);
+            exports_1("GlobalPermissionElse", global_permission_else_1.GlobalPermissionElse);
             exports_1("PermissionFilterValueConverter", permission_filter_1.PermissionFilterValueConverter);
         }
     };

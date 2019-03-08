@@ -148,7 +148,7 @@ Later on, use permission object properties i.e. when securing app routes
 }
 ```
 
-**Note:** When permission object is set, then listed 'can' permission names in custom attribute **-global-permission-show** or **-global-permission-enable** / **-global-permission-if** must be permission object property names not values (actual API string permission names) i.e.
+**Note:** When permission object is set, then listed 'can' permission names in custom attribute **-global-permission-show** or **-global-permission-enable** / **-global-permission-if** or **-global-permission-else** must be permission object property names not values (actual API string permission names) i.e.
 ```html
 // correct usage
 <div global-permission-show="can: AddUsers">Can add users!</div>
